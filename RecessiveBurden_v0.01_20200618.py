@@ -1,11 +1,9 @@
 ##### VarCount using PyVCF, version 0.15 April 16th 2020, by Sean Soo-Heon Kwak #####
 """
 Created on June 18th 2020
-
 @author: Sean Soo-Heon Kwak, M.D., Ph.D., shkwak@snu.ac.kr
 modified from codes by Allison Cox (allison.cox@yale.edu)
-"""
-"""
+
 ###Basic usage
 usage   = "usage: python VarCountSHK_v0.15_20200225.py vcf outname min_AC max_AF phenoname weightname"
 
