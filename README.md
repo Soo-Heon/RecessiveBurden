@@ -6,7 +6,7 @@ Python codes to calculate recessive burden (compound heterozygous + homozygous) 
 
 ###Input parameters
 1) vcf     = Input vcf filename. Can be either vcf, vcf.gz.
-          The input file should be annotated with Gene Symbol in 'INFO/ANN' field.
+          The input file should be annotated with Gene Symbol in 'INFO/ANN' field preferably by SnpEff.
 2) outname = Prefix of output file name.
           Output files will be appended with '_counts.txt', '_weights.txt', '_variants.txt', '_sorted_genotypes.txt.gz'.
 3) min_AC  = Minimum allele count for a variant to be included in the analysis.
