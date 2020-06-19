@@ -1,10 +1,13 @@
 # RecessiveBurden
 Python codes to calculate recessive burden (compound heterozygous + homozygous) in annotated exome sequenced data
 
-###Basic usage
+# Requied
+Python version 3.6 or above
+
+# Basic usage
 "python VarCountSHK_v0.15_20200225.py vcf outname min_AC max_AF phenoname weightname"
 
-###Input parameters
+# Input Parameters
 1) vcf     = Input vcf filename. Can be either vcf, vcf.gz.
           The input file should be annotated with Gene Symbol in 'INFO/ANN' field preferably by SnpEff.
 2) outname = Prefix of output file name.
@@ -24,7 +27,7 @@ Python codes to calculate recessive burden (compound heterozygous + homozygous) 
           The file should be 'TAB' delimited with two columns. 
           First column being variantID:AlternativeAllele (ex rs2233580:T or var10001:A) and second column being weight for each variant.
           
-###Output files
+# Output files
 1) outname_counts.txt: 
         Main output that can be used for logistic regression and down stream analysis.
         Each individual is marked as compound heterozygous ('c') or homozygous ('h') or non-recessive ('0') for each gene.
