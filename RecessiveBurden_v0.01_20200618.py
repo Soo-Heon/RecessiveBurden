@@ -1,6 +1,6 @@
 ##### VarCount using PyVCF, version 0.15 April 16th 2020, by Sean Soo-Heon Kwak #####
 """
-Created on Thur April 16th 15:47:26 2020
+Created on June 18th 2020
 
 @author: Sean Soo-Heon Kwak, M.D., Ph.D., shkwak@snu.ac.kr
 modified from codes by Allison Cox (allison.cox@yale.edu)
@@ -16,18 +16,18 @@ usage   = "usage: python VarCountSHK_v0.15_20200225.py vcf outname min_AC max_AF
           Output files will be appended with '_counts.txt', '_weights.txt', '_variants.txt', '_sorted_genotypes.txt.gz'.
 3) min_AC  = Minimum allele count for a variant to be included in the analysis.
           'INFO/AC' field will be used to filter variants based on the throshold.
-          Variants with less than this threshold will be excluded.
+          Variants with minor allele count GREATER than this threshold will be included.
           Should be an integer.
 4) max_AF  = Maximum alternate allele frequency for a variant to be included in the analysis.
           'INFO/AF' field will be used to filter variants based on the threshold.
-          Variants with higher allele frequency than this threshold will be excluded.
+          Variants with minor allele frequency LESS than this threshold will be included.
           Should be a float.
 5) phenoname = Phenotype file. cases coded as '1', controls coded as '0', missing coded as 'NA'.
           The file should be 'TAB' delimited with two columns. 
           First column being sampleIDs and second column being phenotype codes.
 6) weightname = File for variant weighting based on 7 masks defined as in Flannick J et al. Nature 2019 JUNE 6 (PMID:31118516).
           The file should be 'TAB' delimited with two columns. 
-          First column being variantID and second column being weight for each variant.
+          First column being variantID:AlternativeAllele (ex rs2233580:T or var10001:A) and second column being weight for each variant.
           
 ###Output files
 1) outname_counts.txt: 
@@ -35,37 +35,40 @@ usage   = "usage: python VarCountSHK_v0.15_20200225.py vcf outname min_AC max_AF
         Each individual is marked as compound heterozygous ('c') or homozygous ('h') or non-recessive ('0') for each gene.
         If an individual has homozygous mutation for a specific gene, it will be marked as homozygous ('h'). 
         If the individual does not have homozygous mutation, but have compound heterozygous mutation, it will be marked as compound heterozygous ('c').
-        Otherwise it will be marked as non-recessive or normal ('0').
-        First row has column names.
-        Column names are GENE (gene symbol), TOTAL (total count of individuals with CompHet and/or Homozygous mutation),
-        COMPHET (count of individuals with CompHet mutation), HOMO (count of individuals with Homozygous mutation), 
-        PHENO=NA (count of individuals with CompHet and/or Homozygous mutation in missing phenotype),
-        PHENO=0 (count of individuals with CompHet and/or Homozygous mutation in controls),
-        PHENO=1 (count of individuals with CompHet and/or Homozygous mutation in cases), and
+        Otherwise it will be marked as non-recessive or wild-type ('0').
+        First row has the following column names:
+        GENE (gene symbol), TOTAL (total count of individuals with CompHet and/or Homozygous mutation),
+        COMPHET (total count of individuals with CompHet mutation), HOMO (total count of individuals with Homozygous mutation), 
+        PHENO=NA (total count of individuals with CompHet and/or Homozygous mutation in missing phenotype),
+        PHENO=0 (total count of individuals with CompHet and/or Homozygous mutation in controls),
+        PHENO=1 (total count of individuals with CompHet and/or Homozygous mutation in cases), and
         sampleIDs. 
-        Second row has phenotype information of the samples.   
+        Second row has phenotype information of the samples with cases coded as '1' and controls coded as '0'.
+        Individual level count ('0' or '1') for each gene will be displayed from third row.
 2) outname_weights.txt: 
         Alternative main output that can be used for logistic regression and down stream analysis.
         The difference with 'outname_counts.txt' is that it uses variant weights to calculate burden of recessive mutations.
         Each individual has weight for recessive burden for each gene.
-        For individuals with CompHet or Homozygous mutation, the weight is calculated by 
+        For individuals with compound heterozygous or homozygous mutation, the weight is calculated by 
         adding the maximum weight from the maternally inherited alleles and the maximum weight from the paternally inherited alleles.
-        Individuals who do not have CompHet or Homozygous mutation for the gene will have '0' value as their weight.
-        First row has column names.
-        Column names are GENE (gene symbol), TOTAL (total weight of individuals with CompHet and/or Homozygous mutation),
-        COMPHET (weight of individuals with CompHet mutation), HOMO (weight of individuals with Homozygous mutation), 
-        PHENO=NA (weight of individuals with CompHet and/or Homozygous mutation in missing phenotype),
-        PHENO=0 (weight of individuals with CompHet and/or Homozygous mutation in controls),
-        PHENO=1 (weight of individuals with CompHet and/or Homozygous mutation in cases), and
-        sampleIDs.           
+        Individuals who do not have compound heterozygous or homozygous mutation for the gene will have '0' value as their weight.
+        First row has the following column names:
+        GENE (gene symbol), TOTALW (total weight of individuals with CompHet and/or Homozygous mutation),
+        COMPHETW (total weight of individuals with CompHet mutation), HOMOW (total weight of individuals with Homozygous mutation), 
+        PHENOW=NA (total weight of individuals with CompHet and/or Homozygous mutation in missing phenotype),
+        PHENOW=0 (total weight of individuals with CompHet and/or Homozygous mutation in controls),
+        PHENOW=1 (total weight of individuals with CompHet and/or Homozygous mutation in cases), and
+        sampleIDs. 
+        Second row has phenotype information of the samples with cases coded as '1' and controls coded as '0'.  
+        Individual level weight (0.0 - 2.0) for each gene will be displayed from third row.
 3) outname_variants.txt: 
         Information of variants that comprise the compound heterozygous or homozygous mutation 
         and list of individuals with that specific variant.
         (het) column: list of individuals heterozygous for the variant
-        (hot) column: list of individuals homozygous for the variant
+        (hom) column: list of individuals homozygous for the variant
 4) outname_sorted_genotypes.txt.gz: 
         Genotypes extracted from input vcf file. The file is sorted based on genename.
-        Column names are CHROM POS ID REF ALT AC AF GENE IMPACT SampleIDs
+        Column names are CHROM POS ID:ALT REF ALT AC AF GENE IMPACT SampleIDs
 """
 
 import vcf
@@ -150,7 +153,7 @@ countfile.write(sampleIDs[len(sampleIDs)-1]+'\n')
 countfile.write('T2D'+'\t'+'TOTAL'+'\t'+'COMPHET'+'\t'+'HOMO'+'\t'+'MISSING'+'\t'+'CONTROL'+'\t'+'CASE'+'\t')
 
 ##Make header with sampleIDs for idvweightfile
-idvweightfile.write('GENE'+'\t'+ 'TOTAL'+'\t'+'COMPHET'+'\t'+'HOMO'+'\t'+'PHENO=NA'+'\t'+'PHENO=0'+'\t'+'PHENO=1'+'\t')
+idvweightfile.write('GENE'+'\t'+ 'TOTALW'+'\t'+'COMPHETW'+'\t'+'HOMOW'+'\t'+'PHENOW=NA'+'\t'+'PHENOW=0'+'\t'+'PHENOW=1'+'\t')
 for i in range(0,len(sampleIDs)-1):
     idvweightfile.write(sampleIDs[i]+'\t')
 idvweightfile.write(sampleIDs[len(sampleIDs)-1]+'\n')
@@ -180,7 +183,7 @@ with gzip.open(sortfilename, 'rt') as infile:
     phenos.close()
 
 ##Make empty dictionary to store 'variantID':'weight' pairs
-#Initially, set all phenos to '0'
+#Initially, set all weights to '0'
 #Read in all lines of sorted intermediate gzip file
     w={}
     lines=infile.readlines()
@@ -193,11 +196,12 @@ with gzip.open(sortfilename, 'rt') as infile:
         (key,val)=line.rstrip('\n').split('\t')
         w[key]=val	
 
-#Re-read all lines of sorted intermediate gzip file from the beginning
+##Read all lines of sorted intermediate gzip file from the beginning
     infile.seek(0)
     line=infile.readline()
     lines=infile.readlines()
-#Set samplecount, samplecountnew, sampleweight related lists to 0s
+
+##Set samplecount, samplecountnew, sampleweight related lists to 0s
     samplecount=[]
     samplecountnew=[]
     sampleweight_L=[]
@@ -215,7 +219,8 @@ with gzip.open(sortfilename, 'rt') as infile:
         sampleweightnew_L.append(['0']) #generate list of lists
         sampleweightnew_R.append(['0']) #generate list of lists
         sampleweightnew_max.append('0')
-#Set initial genename as first variant GENE
+
+##Set initial genename as first variant GENE
     genename=lines[0].split('\t')[7]
 
 ##For each variant in same gene, test if each individual has compound heterozygous or homozygous mutation
@@ -260,8 +265,7 @@ with gzip.open(sortfilename, 'rt') as infile:
                     sampleweight_R[i-9].append(w[words[2]]) #append variant weight to R list
                     sampleweight_L[i-9].append(w[words[2]]) #append variant weight to L list
                     samplecount[i-9]='hom'
-#If new GENE starts, calculate total counts of either CompHet/Homozygous individuals
-#and recode 'comp' as 'c', 'homo' as 'h', and others as '0'
+#If new GENE starts, calculate total counts of either CompHet/Homozygous individuals and recode 'comp' as 'c', 'homo' as 'h', and others as '0'
 #also find the maximal weight from L and R and add them to generate individual weight for the specific gene
         else:
             total=0 #total count
@@ -311,13 +315,14 @@ with gzip.open(sortfilename, 'rt') as infile:
 #Count number of CompHet/Homo individuals in Cases
                         total_case=total_case+1
                         total_casew = round(total_casew + float(sampleweight_max[i]), 3)
-#Write out samplecount to countfile
+
+##Write out samplecount to countfile
             countfile.write(genename+'\t'+str(total)+'\t'+str(total_c)+'\t'+str(total_h)+'\t'+str(total_na)+'\t'+str(total_control)+'\t'+str(total_case)+'\t')
             for i in range(0, len(sampleIDs)-1):
                 countfile.write(str(samplecount[i])+'\t')
             countfile.write(str(samplecount[len(sampleIDs)-1])+'\n')
 
-#Write out individual weight to idvweightfile
+##Write out individual weight to idvweightfile
             idvweightfile.write(genename+'\t'+str(total_w)+'\t'+str(total_cw)+'\t'+str(total_hw)+'\t'+str(total_naw)+'\t'+str(total_controlw)+'\t'+str(total_casew)+'\t')
             for i in range(0, len(sampleIDs)-1):
                 idvweightfile.write(str(sampleweight_max[i])+'\t')
@@ -345,7 +350,7 @@ with gzip.open(sortfilename, 'rt') as infile:
                 sampleweightnew_R.append(['0'])
                 sampleweightnew_max.append('0')
 
-#Main Iteration for First Variant of GENENAMENEW
+##Iteration for First Variant of GENENAMENEW
 #Iterate each sample GTs to find CompHet/Homozygous individuals
             for i in range(9,numwords):
                 if (words[i]=='0|1'):
@@ -381,7 +386,8 @@ with gzip.open(sortfilename, 'rt') as infile:
             samplecount=samplecountnew
             sampleweight_L=sampleweightnew_L
             sampleweight_R=sampleweightnew_R
-#This part works for the last gene that does not go to 'else' for genenamenew==genename    
+
+##This part works for the last gene that does not go to 'else' for genenamenew==genename    
     total = 0
     total_h = 0
     total_c = 0
@@ -390,18 +396,21 @@ with gzip.open(sortfilename, 'rt') as infile:
     total_cw = 0
     for i in range(0, len(sampleIDs)):
         if ((samplecount[i] == 'comp') or (samplecount[i]=='hom')):
-#Count total number of CompHet/Homo individuals
+          
+##Count total number of CompHet/Homo individuals
             total=total+1
             sampleweight_max[i]=round(float(max(sampleweight_L[i]))+float(max(sampleweight_R[i])), 3)
             total_w = round(total_w + float(sampleweight_max[i]), 3)
             if samplecount[i] == 'hom':
                 samplecount[i] = 'h'
-#Count total number of Homo individuals
+          
+##Count total number of Homo individuals
                 total_h=total_h+1
                 total_hw = round(total_hw + float(sampleweight_max[i]), 3)
             elif samplecount[i] == 'comp':
                 samplecount[i] = 'c'
-#Count total number of CompHet individuals
+          
+##Count total number of CompHet individuals
                 total_c=total_c+1
                 total_cw =  round(total_cw + float(sampleweight_max[i]), 3)
         else:
@@ -415,17 +424,20 @@ with gzip.open(sortfilename, 'rt') as infile:
     for i in range(0, len(sampleIDs)):
         if d[sampleIDs[i]]=='NA':
             if ((samplecount[i] == 'c') or (samplecount[i]=='h')):
-#Count number of CompHet/Homo individuals in Missingness
+                              
+##Count number of CompHet/Homo individuals in Missingness
                 total_na=total_na+1
                 total_naw = round(total_naw + float(sampleweight_max[i]), 3)
         elif d[sampleIDs[i]]=='0':
             if ((samplecount[i] == 'c') or (samplecount[i]=='h')):
-#Count number of CompHet/Homo individuals in Controls
+                              
+##Count number of CompHet/Homo individuals in Controls
                 total_control=total_control+1
                 total_controlw = round(total_controlw + float(sampleweight_max[i]), 3)
         elif d[sampleIDs[i]]=='1':
             if ((samplecount[i] == 'c') or (samplecount[i]=='h')):
-#Count number of CompHet/Homo individuals in Cases
+                              
+##Count number of CompHet/Homo individuals in Cases
                 total_case=total_case+1
                 total_casew = round(total_casew + float(sampleweight_max[i]), 3)
     countfile.write(genename+'\t'+str(total)+'\t'+str(total_c)+'\t'+str(total_h)+'\t'+str(total_na)+'\t'+str(total_control)+'\t'+str(total_case)+'\t')
@@ -433,22 +445,18 @@ with gzip.open(sortfilename, 'rt') as infile:
         countfile.write(str(samplecount[i])+'\t')
     countfile.write(str(samplecount[len(sampleIDs)-1])+'\n')
 
-#Write out individual weight to idvweightfile
+##Write out individual weight to idvweightfile
     idvweightfile.write(genename+'\t'+str(total_w)+'\t'+str(total_cw)+'\t'+str(total_hw)+'\t'+str(total_naw)+'\t'+str(total_controlw)+'\t'+str(total_casew)+'\t')
     for i in range(0, len(sampleIDs)-1):
         idvweightfile.write(str(sampleweight_max[i])+'\t')
     idvweightfile.write(str(sampleweight_max[len(sampleIDs)-1])+'\n')
 
     weights.close()
-
 infile.close()
-
 countfile.close()
-
 idvweightfile.close()
 
-
-#This part is to generate sampleIDs for each variant that comprise compound heterozygous or homozygous mutations
+##This part is to generate sampleIDs for each variant that comprise compound heterozygous or homozygous mutations
 #Read in sorted intermediate gzip file
 with gzip.open(sortfilename, 'rt') as infile:
 #Skip header
@@ -457,7 +465,6 @@ with gzip.open(sortfilename, 'rt') as infile:
     variantfilename=output_filename+'_variants.txt'
     variantfile=open(variantfilename, 'w')
     variantfile.write('CHOM'+'\t'+'POS'+'\t'+'ID:ALT'+'\t'+'REF'+'\t'+'ALT'+'\t'+'GENE'+'\t'+'HET_SAMPLEIDs'+'\t'+'HOM_SAMPLEIDs'+'\n')
-
 #Read in all lines of sorted intermediate gzip file
     lines=infile.readlines()
 #For each variant, identify individuals with 'c' or 'h' in the same gene, and if their genotype is either '0|1', or '1|0', or'1|1'
@@ -467,8 +474,7 @@ with gzip.open(sortfilename, 'rt') as infile:
         words=line.rstrip('\n').split('\t')
 #Set genename in line as gene
         gene=words[7]
-        numwords=len(words)
-        
+        numwords=len(words)        
 #Set variantsampleID list with variantfile columns: CHROM POS ID GENE
         variantsampleID=[words[0], words[1], words[2], words[3], words[4], words[7]]
 #Open countfile
