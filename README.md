@@ -2,10 +2,7 @@
 Python codes to calculate recessive burden (compound heterozygous + homozygous) in annotated exome sequenced data
 
 ###Basic usage
-usage = "python VarCountSHK_v0.15_20200225.py vcf outname min_AC max_AF phenoname weightname"
-
-###Basic usage
-usage   = "usage: python VarCountSHK_v0.15_20200225.py vcf outname min_AC max_AF phenoname weightname"
+"python VarCountSHK_v0.15_20200225.py vcf outname min_AC max_AF phenoname weightname"
 
 ###Input parameters
 1) vcf     = Input vcf filename. Can be either vcf, vcf.gz.
