@@ -5,25 +5,25 @@ Python codes to calculate recessive burden (compound heterozygous + homozygous) 
 Python version 3.6 or above
 
 # Basic usage
-"python VarCountSHK_v0.15_20200225.py vcf outname min_AC max_AF phenoname weightname"
+"python RecessiveBurden_v0.01_20200624.py -i input_file -o output -c minAC -f maxAF -w weight_file -p pheno_file"
 
 # Input Parameters
-1) vcf     = Input vcf filename. Can be either vcf, vcf.gz.
+1) vcf_file     = Input vcf filename. Can be either vcf, vcf.gz.
           The input file should be annotated with Gene Symbol in 'INFO/ANN' field preferably by SnpEff.
-2) outname = Prefix of output file name.
+2) output = Prefix of output file name.
           Output files will be appended with '_counts.txt', '_weights.txt', '_variants.txt', '_sorted_genotypes.txt.gz'.
-3) min_AC  = Minimum allele count for a variant to be included in the analysis.
+3) minAC  = Minimum allele count for a variant to be included in the analysis.
           'INFO/AC' field will be used to filter variants based on the throshold.
           Variants with minor allele count GREATER than this threshold will be included.
           Should be an integer.
-4) max_AF  = Maximum alternate allele frequency for a variant to be included in the analysis.
+4) maxAF  = Maximum alternate allele frequency for a variant to be included in the analysis.
           'INFO/AF' field will be used to filter variants based on the threshold.
           Variants with minor allele frequency LESS than this threshold will be included.
           Should be a float.
-5) phenoname = Phenotype file. cases coded as '1', controls coded as '0', missing coded as 'NA'.
+5) pheno_file = Phenotype file. cases coded as '1', controls coded as '0', missing coded as 'NA'.
           The file should be 'TAB' delimited with two columns. 
           First column being sampleIDs and second column being phenotype codes.
-6) weightname = File for variant weighting based on 7 masks defined as in Flannick J et al. Nature 2019 JUNE 6 (PMID:31118516).
+6) weight_file = File for variant weighting based on 7 masks defined as in Flannick J et al. Nature 2019 JUNE 6 (PMID:31118516).
           The file should be 'TAB' delimited with two columns. 
           First column being variantID:AlternativeAllele (ex rs2233580:T or var10001:A) and second column being weight for each variant.
           
