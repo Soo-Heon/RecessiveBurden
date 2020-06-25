@@ -94,4 +94,18 @@ R version 3.6 or above
           Phenotype file. 
           Cases coded as '1', controls coded as '0', missing coded as 'NA'.
           To prevent column name being identical with gene symbol, columns should be named in lower case.
-4) dependent variable [-y]:
+4) outcome variable [-y]:
+          Outcome variable or dependent variable name.
+5) independent variable [-x]:
+          Independent variable or covariate name.
+          Multiple variables should be separated by "," without space.
+
+## 2.4 Output Files
+outname_file:
+          Gene level Firth's penalized logistic regression result.
+          GENE (gene symbol,
+          CHROM (chromosome), POS (position), OR (odds ratio), BETA (coefficient of logistic regression), SE.BETA (standard error of beta),
+          95%CIL (lower 95% confidence interval of beta), 95%CIU (upper 95% confidence interval of beta), P (significance P value), 
+          Case.Count (number of cases being CompHet and/or Homozygous), Case.Weight (sum of weights for cases being CompHet and/or Homozygous),
+          Cont.Count (number of controls being CompHet and/or Homozygous), Cont.Weight (sum of weights for controls being CompHet and/or Homozygous),
+          Total.Case (total number of cases), Total.Cont (total number of controls)
