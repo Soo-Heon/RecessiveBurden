@@ -1,7 +1,7 @@
 # 1. Calculating RecessiveBurden From VCF
 Python codes to calculate recessive burden (compound heterozygous + homozygous) in annotated exome sequenced data
 
-## 1.1 Requied
+## 1.1 Requirement
 Python version 3.6 or above
 
 ## 1.2 Basic Usage
@@ -90,7 +90,7 @@ Python version 3.6 or above
 
           R code to perform linear regression analysis for continuous trait using output from RecessiveBurden.
 
-## 2.1 Requied
+## 2.1 Requirement
 R version 3.6 or above
 Packages logistf, svMisc
 ## 2.2 Basic Usage
