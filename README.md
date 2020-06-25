@@ -96,9 +96,11 @@ R version 3.6 or above
 1) input_file [-i]:
 
           Input file should be transposed form of RecessiveBurden output either from 'outname_weights.txt' or 'outname_counts.txt'.
-          Transpose can be done with "transpose.awk" script included in this repository.
+     Transpose can be done with "transpose.awk" script included in this repository.
+
           Command should be: "awk -f transpose.awk outname_weights.txt > RecessiveBurden_weight.txt".
           Once transposition is done, 'RecessiveBurden_weight.txt' can be used as input_file.
+
 2) output_file [-o]:
 
           Output file name.
