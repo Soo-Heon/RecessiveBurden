@@ -21,12 +21,12 @@ Python version 3.6 or above
 3) minAC [-c]: Minimum allele count for a variant to be included in the analysis.
 
           'INFO/AC' field will be used to filter variants based on the throshold.
-          Variants with minor allele count **GREATER OR EQUAL** to this threshold will be included.
+          Variants with minor allele count "GREATER OR EQUAL" to this threshold will be included.
           Should be an integer.
 4) maxAF [-f]: Maximum alternate allele frequency for a variant to be included in the analysis.
 
           'INFO/AF' field will be used to filter variants based on the threshold.
-          Variants with minor allele frequency **LESS** than this threshold will be included.
+          Variants with minor allele frequency "LESS" than this threshold will be included.
           Should be a float.
 5) pheno_file [-p]: Phenotype file. cases coded as '1', controls coded as '0', missing coded as 'NA'.
 
