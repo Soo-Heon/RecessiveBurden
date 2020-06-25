@@ -57,8 +57,8 @@ intermfile.write(sampleIDs[len(sampleIDs)-1] + '\n')
 #Append individual genotype data to intermfile per variant
 #CHROM POS ID REF ALT AC AF GENE IMPACT GENOTYPEs
 for record in vcf_reader:
-#Filter by AC>sys.argv[3] and AF<sys.argv[4]
-    if ((record.INFO['AC'][0] > int(min_AC)) and (record.INFO['AF'][0] < float(max_AF))):
+#Filter by AC>=sys.argv[3] and AF<sys.argv[4]
+    if ((record.INFO['AC'][0] >= int(min_AC)) and (record.INFO['AF'][0] < float(max_AF))):
         intermfile.write(str(record.CHROM) + '\t' + str(record.POS) + '\t' + record.ID + ':' + str(record.ALT[0]) + '\t' + str(record.REF) + '\t' + str(record.ALT[0]) + '\t' + str(record.INFO['AC'][0]) + '\t' + str(record.INFO['AF'][0]) + '\t' + record.INFO['ANN'][0].split('|')[3] + '\t' + record.INFO['ANN'][0].split('|')[2] + '\t')
         for sample in record.samples[0:len(record.samples)-1]:
             intermfile.write(sample['GT']+'\t')
