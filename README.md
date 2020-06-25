@@ -103,7 +103,9 @@ R version 3.6 or above
 ## 2.4 Output Files
 outname_file:
           Gene level Firth's penalized logistic regression result.
+          
           First row has the following column names:
+          
           GENE (gene symbol,
           CHROM (chromosome), POS (position), OR (odds ratio), BETA (coefficient of logistic regression), SE.BETA (standard error of beta),
           95%CIL (lower 95% confidence interval of beta), 95%CIU (upper 95% confidence interval of beta), P (significance P value), 
