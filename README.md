@@ -92,7 +92,7 @@ Python version 3.6 or above
 
 ## 2.1 Requied
 R version 3.6 or above
-
+Packages logistf, svMisc
 ## 2.2 Basic Usage
 "Rscript --vanilla logistf_09_20200620.R -i RecessiveBurden_weight.txt -o output_file -p pheno_file -y t2d -x age,sex,bmi"
 
