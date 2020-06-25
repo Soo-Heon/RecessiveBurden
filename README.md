@@ -124,6 +124,8 @@ outname_file:
           OR (odds ratio), BETA (coefficient of logistic regression), SE.BETA (standard error of beta),
           95%CIL (lower 95% confidence interval of beta), 95%CIU (upper 95% confidence interval of beta), 
           P (significance P value), 
-          Case.Count (number of cases being CompHet and/or Homozygous), Case.Weight (sum of weights for cases being CompHet and/or Homozygous),
-          Cont.Count (number of controls being CompHet and/or Homozygous), Cont.Weight (sum of weights for controls being CompHet and/or Homozygous),
+          Case.Count (number of cases being CompHet and/or Homozygous), 
+          Case.Weight (sum of weights for cases being CompHet and/or Homozygous),
+          Cont.Count (number of controls being CompHet and/or Homozygous), 
+          Cont.Weight (sum of weights for controls being CompHet and/or Homozygous),
           Total.Case (total number of cases), Total.Cont (total number of controls)
