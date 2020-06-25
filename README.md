@@ -94,24 +94,30 @@ R version 3.6 or above
 
 ## 2.3 Input Parameters
 1) input_file [-i]:
+
           Input file should be transposed form of RecessiveBurden output either from 'outname_weights.txt' or 'outname_counts.txt'.
           Transpose can be done with "transpose.awk" script included in this repository.
           Command should be: "awk -f transpose.awk outname_weights.txt > RecessiveBurden_weight.txt".
           Once transposition is done, 'RecessiveBurden_weight.txt' can be used as input_file.
 2) output_file [-o]:
+
           Output file name.
 3) pheno_file [-p]:
+
           Phenotype file. 
           Cases coded as '1', controls coded as '0', missing coded as 'NA'.
           To prevent column name being identical with gene symbol, columns should be named in lower case.
 4) outcome variable [-y]:
+
           Outcome variable or dependent variable name.
 5) independent variable [-x]:
+
           Independent variable or covariate name.
           Multiple variables should be separated by "," without space.
 
 ## 2.4 Output Files
 outname_file:
+
           Gene level Firth's penalized logistic regression result.
           First row has the following column names:
           GENE (gene symbol,
