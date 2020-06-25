@@ -37,13 +37,13 @@ Python version 3.6 or above
         If the individual does not have homozygous mutation, but have compound heterozygous mutation, it will be marked as compound heterozygous ('c').
         Otherwise it will be marked as non-recessive or wild-type ('0').
         First row has the following column names:
-        - GENE (gene symbol)
-        - TOTAL (total count of individuals with CompHet and/or Homozygous mutation)
-        - COMPHET (total count of individuals with CompHet mutation), HOMO (total count of individuals with Homozygous mutation),
-        - PHENO=NA (total count of individuals with CompHet and/or Homozygous mutation in missing phenotype),
-        - PHENO=0 (total count of individuals with CompHet and/or Homozygous mutation in controls),
-        - PHENO=1 (total count of individuals with CompHet and/or Homozygous mutation in cases),
-        - sampleIDs. 
+        GENE (gene symbol),
+        TOTAL (total count of individuals with CompHet and/or Homozygous mutation),
+        COMPHET (total count of individuals with CompHet mutation), HOMO (total count of individuals with Homozygous mutation),
+        PHENO=NA (total count of individuals with CompHet and/or Homozygous mutation in missing phenotype),
+        PHENO=0 (total count of individuals with CompHet and/or Homozygous mutation in controls),
+        PHENO=1 (total count of individuals with CompHet and/or Homozygous mutation in cases),
+        sampleIDs. 
         Second row has phenotype information of the samples with cases coded as '1' and controls coded as '0'.
         Individual level count ('0' or '1') for each gene will be displayed from third row.
 2) outname_weights.txt: 
@@ -80,4 +80,18 @@ Python version 3.6 or above
 R version 3.6 or above
 
 ## 2.2 Basic Usage
-"Rscript --vanilla logistf_09_20200620.R -i chr1.weight.txt -o output.txt -p pheno.txt -y t2d -x age,sex,bmi"
+"Rscript --vanilla logistf_09_20200620.R -i RecessiveBurden_weight.txt -o output_file -p pheno_file -y t2d -x age,sex,bmi"
+
+## 2.3 Input Parameters
+1) input_file [-i]:
+          Input file should be transposed form of RecessiveBurden output either from 'outname_weights.txt' or 'outname_counts.txt'.
+          Transpose can be done with "transpose.awk" script included in this repository.
+          Command should be: "awk -f transpose.awk outname_weights.txt > RecessiveBurden_weight.txt".
+          Once transposition is done, 'RecessiveBurden_weight.txt' can be used as input_file.
+2) output_file [-o]:
+          Output file name.
+3) pheno_file [-p]:
+          Phenotype file. 
+          Cases coded as '1', controls coded as '0', missing coded as 'NA'.
+          To prevent column name being identical with gene symbol, columns should be named in lower case.
+4) dependent variable [-y]:
