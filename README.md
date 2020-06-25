@@ -10,12 +10,14 @@ Python version 3.6 or above
 ## 1.3 Input Parameters
 1) vcf_file = Input vcf filename. Can be either vcf, vcf.gz.
 
-          The input file should be annotated with Gene Symbol and IMPACT (moderate|high) in 'INFO/ANN' field preferably by SnpEff.
+          The input file should be annotated with 
+          Gene Symbol and IMPACT (moderate|high) in 'INFO/ANN' field preferably by SnpEff.
           Recessive burden is calculated in gene level by looping through variants. 
           Therefore, variants in a gene should be sorted in a consecutive manner.
 2) output = Prefix of output file name.
 
-          Output files will be appended with '_counts.txt', '_weights.txt', '_variants.txt', '_sorted_genotypes.txt.gz'.
+          Output files will be appended with '_counts.txt', '_weights.txt', 
+          '_variants.txt', and '_sorted_genotypes.txt.gz'.
 3) minAC  = Minimum allele count for a variant to be included in the analysis.
 
           'INFO/AC' field will be used to filter variants based on the throshold.
