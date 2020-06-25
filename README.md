@@ -35,7 +35,8 @@ Python version 3.6 or above
 6) weight_file = File for variant weighting based on 7 masks defined as in Flannick J et al. Nature 2019 JUNE 6 (PMID:31118516).
 
           The file should be 'TAB' delimited with two columns. 
-          First column being 'variantID:AlternativeAllele' (ex rs2233580:T or var10001:A) and second column being weight for each variant.
+          First column being 'variantID:AlternativeAllele' (ex rs2233580:T or var10001:A) and 
+          second column being weight for each variant.
           
 ## 1.4 Output Files
 1) outname_counts.txt: 
@@ -43,7 +44,8 @@ Python version 3.6 or above
         Main output that can be used for logistic regression and down stream analysis.
         Each individual is marked as compound heterozygous ('c') or homozygous ('h') or non-recessive ('0') for each gene.
         If an individual has homozygous mutation for a specific gene, it will be marked as homozygous ('h'). 
-        If the individual does not have homozygous mutation, but have compound heterozygous mutation, it will be marked as compound heterozygous ('c').
+        If the individual does not have homozygous mutation, but have compound heterozygous mutation, 
+        it will be marked as compound heterozygous ('c').
         Otherwise it will be marked as non-recessive or wild-type ('0').
         First row has the following column names:
         GENE (gene symbol),
