@@ -1,15 +1,17 @@
-# 1. RecessiveBurden calculation from VCF
+# 1. Calculating RecessiveBurden From VCF
 Python codes to calculate recessive burden (compound heterozygous + homozygous) in annotated exome sequenced data
 
 ## 1.1 Requied
 Python version 3.6 or above
 
-## 1.2 Basic usage
+## 1.2 Basic Usage
 "python RecessiveBurden_v0.02_20200624.py -i input_file -o output -c minAC -f maxAF -w weight_file -p pheno_file"
 
 ## 1.3 Input Parameters
-1) vcf_file     = Input vcf filename. Can be either vcf, vcf.gz.
-          The input file should be annotated with Gene Symbol in 'INFO/ANN' field preferably by SnpEff.
+1) vcf_file = Input vcf filename. Can be either vcf, vcf.gz.
+          The input file should be annotated with Gene Symbol and IMPACT (moderate|high) in 'INFO/ANN' field preferably by SnpEff.
+          Recessive burden is calculated in gene level by looping through variants. 
+          Therefore, variants in a gene should be sorted in a consecutive manner.
 2) output = Prefix of output file name.
           Output files will be appended with '_counts.txt', '_weights.txt', '_variants.txt', '_sorted_genotypes.txt.gz'.
 3) minAC  = Minimum allele count for a variant to be included in the analysis.
@@ -25,9 +27,9 @@ Python version 3.6 or above
           First column being sampleIDs and second column being phenotype codes.
 6) weight_file = File for variant weighting based on 7 masks defined as in Flannick J et al. Nature 2019 JUNE 6 (PMID:31118516).
           The file should be 'TAB' delimited with two columns. 
-          First column being variantID:AlternativeAllele (ex rs2233580:T or var10001:A) and second column being weight for each variant.
+          First column being 'variantID:AlternativeAllele' (ex rs2233580:T or var10001:A) and second column being weight for each variant.
           
-## 1.4 Output files
+## 1.4 Output Files
 1) outname_counts.txt: 
         Main output that can be used for logistic regression and down stream analysis.
         Each individual is marked as compound heterozygous ('c') or homozygous ('h') or non-recessive ('0') for each gene.
@@ -67,3 +69,13 @@ Python version 3.6 or above
 4) outname_sorted_genotypes.txt.gz: 
         Genotypes extracted from input vcf file. The file is sorted based on genename.
         Column names are CHROM POS ID:ALT REF ALT AC AF GENE IMPACT SampleIDs
+
+# 2. Association Testing Using Weighted RecessiveBurden
+- R code to perform Firth's penalized logistic regression analysis for binary trait using output from RecessiveBurden.
+- R code to perform linear regression analysis for continuous trait using output from RecessiveBurden.
+
+## 2.1 Requied
+R version 3.6 or above
+
+## 2.2 Basic Usage
+"Rscript --vanilla logistf_09_20200620.R -i chr1.weight.txt -o output.txt -p pheno.txt -y t2d -x age,sex,bmi"
