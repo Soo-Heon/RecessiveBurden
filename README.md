@@ -37,11 +37,12 @@ Python version 3.6 or above
         If the individual does not have homozygous mutation, but have compound heterozygous mutation, it will be marked as compound heterozygous ('c').
         Otherwise it will be marked as non-recessive or wild-type ('0').
         First row has the following column names:
-        GENE (gene symbol), TOTAL (total count of individuals with CompHet and/or Homozygous mutation),
-        COMPHET (total count of individuals with CompHet mutation), HOMO (total count of individuals with Homozygous mutation), 
+        GENE (gene symbol),
+        TOTAL (total count of individuals with CompHet and/or Homozygous mutation),
+        COMPHET (total count of individuals with CompHet mutation), HOMO (total count of individuals with Homozygous mutation),
         PHENO=NA (total count of individuals with CompHet and/or Homozygous mutation in missing phenotype),
         PHENO=0 (total count of individuals with CompHet and/or Homozygous mutation in controls),
-        PHENO=1 (total count of individuals with CompHet and/or Homozygous mutation in cases), and
+        PHENO=1 (total count of individuals with CompHet and/or Homozygous mutation in cases),
         sampleIDs. 
         Second row has phenotype information of the samples with cases coded as '1' and controls coded as '0'.
         Individual level count ('0' or '1') for each gene will be displayed from third row.
@@ -53,11 +54,12 @@ Python version 3.6 or above
         adding the maximum weight from the maternally inherited alleles and the maximum weight from the paternally inherited alleles.
         Individuals who do not have compound heterozygous or homozygous mutation for the gene will have '0' value as their weight.
         First row has the following column names:
-        GENE (gene symbol), TOTALW (total weight of individuals with CompHet and/or Homozygous mutation),
-        COMPHETW (total weight of individuals with CompHet mutation), HOMOW (total weight of individuals with Homozygous mutation), 
+        GENE (gene symbol),
+        TOTALW (total weight of individuals with CompHet and/or Homozygous mutation),
+        COMPHETW (total weight of individuals with CompHet mutation), HOMOW (total weight of individuals with Homozygous mutation),
         PHENOW=NA (total weight of individuals with CompHet and/or Homozygous mutation in missing phenotype),
         PHENOW=0 (total weight of individuals with CompHet and/or Homozygous mutation in controls),
-        PHENOW=1 (total weight of individuals with CompHet and/or Homozygous mutation in cases), and
+        PHENOW=1 (total weight of individuals with CompHet and/or Homozygous mutation in cases),
         sampleIDs. 
         Second row has phenotype information of the samples with cases coded as '1' and controls coded as '0'.  
         Individual level weight (0.0 - 2.0) for each gene will be displayed from third row.
