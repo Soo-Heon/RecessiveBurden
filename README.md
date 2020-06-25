@@ -37,13 +37,13 @@ Python version 3.6 or above
         If the individual does not have homozygous mutation, but have compound heterozygous mutation, it will be marked as compound heterozygous ('c').
         Otherwise it will be marked as non-recessive or wild-type ('0').
         First row has the following column names:
-        GENE (gene symbol),
-        TOTAL (total count of individuals with CompHet and/or Homozygous mutation),
-        COMPHET (total count of individuals with CompHet mutation), HOMO (total count of individuals with Homozygous mutation),
-        PHENO=NA (total count of individuals with CompHet and/or Homozygous mutation in missing phenotype),
-        PHENO=0 (total count of individuals with CompHet and/or Homozygous mutation in controls),
-        PHENO=1 (total count of individuals with CompHet and/or Homozygous mutation in cases),
-        sampleIDs. 
+        - GENE (gene symbol),
+        - TOTAL (total count of individuals with CompHet and/or Homozygous mutation),
+        - COMPHET (total count of individuals with CompHet mutation), HOMO (total count of individuals with Homozygous mutation),
+        - PHENO=NA (total count of individuals with CompHet and/or Homozygous mutation in missing phenotype),
+        - PHENO=0 (total count of individuals with CompHet and/or Homozygous mutation in controls),
+        - PHENO=1 (total count of individuals with CompHet and/or Homozygous mutation in cases),
+        - sampleIDs. 
         Second row has phenotype information of the samples with cases coded as '1' and controls coded as '0'.
         Individual level count ('0' or '1') for each gene will be displayed from third row.
 2) outname_weights.txt: 
