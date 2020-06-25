@@ -21,12 +21,12 @@ Python version 3.6 or above
 3) minAC [-c]: Minimum allele count for a variant to be included in the analysis.
 
           'INFO/AC' field will be used to filter variants based on the throshold.
-          Variants with minor allele count "GREATER OR EQUAL" to this threshold will be included.
+          Variants with minor allele count **GREATER OR EQUAL** to this threshold will be included.
           Should be an integer.
 4) maxAF [-f]: Maximum alternate allele frequency for a variant to be included in the analysis.
 
           'INFO/AF' field will be used to filter variants based on the threshold.
-          Variants with minor allele frequency "LESS" than this threshold will be included.
+          Variants with minor allele frequency **LESS** than this threshold will be included.
           Should be a float.
 5) pheno_file [-p]: Phenotype file. cases coded as '1', controls coded as '0', missing coded as 'NA'.
 
@@ -104,7 +104,7 @@ Packages logistf, svMisc
 1) input_file [-i]:
 
           Input file should be transposed form of RecessiveBurden output either from 'outname_weights.txt' or 'outname_counts.txt'.
-     Transpose can be done with "transpose.awk" script included in this repository.
+     Transpose can be done with **transpose.awk** script included in this repository.
 
           Command should be: "awk -f transpose.awk outname_weights.txt > RecessiveBurden_weight.txt".
           Once transposition is done, 'RecessiveBurden_weight.txt' can be used as input_file.
