@@ -79,7 +79,6 @@ cil[i-1]<-round(model$ci.lower[2], digits=4)
 ciu[i-1]<-round(model$ci.upper[2], digits=4)
 pval[i-1]<-model$prob[2]
 }
-cat("\n")
 if (i == (length(names(ndata))-length(select_col)+1)) print(paste("A total of ", i, " Iteration Done!", sep=""))
 }
 
