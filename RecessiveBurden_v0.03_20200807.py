@@ -1,8 +1,7 @@
 """
-Version 0.02
-Created on June 24th 2020
+Version 0.03
+Created on August 7th 2020
 @author: Sean Soo-Heon Kwak, M.D., Ph.D., shkwak@snu.ac.kr
-modified from codes by Allison Cox (allison.cox@yale.edu)
 """
 
 import vcf
@@ -15,8 +14,8 @@ usage = "usage: python %prog -i input.vcf.gz -o output -c minAC -f maxAF -w weig
 parser=optparse.OptionParser(usage)
 parser.add_option('-i', '--input', action="store", type="string", dest="input", help="input vcf or vcf.gz file name")
 parser.add_option('-o', '--output', action="store", type="string", dest="output", help="output file name prefix")
-parser.add_option('-c', '--minAC', action="store", type="int", dest="minAC", help="minor AC: variants with alternative allele count GREATER than this threshold will be included")
-parser.add_option('-f', '--maxAF', action="store", type="float", dest="maxAF", help="maximum AF: variants with alternative allele frequency LESS than this threshold will be included")
+parser.add_option('-c', '--minAC', action="store", type="int", dest="minAC", help="minimum AC: variants with alternative allele count EQUAL OR GREATER (>=) than this threshold will be included")
+parser.add_option('-f', '--maxAF', action="store", type="float", dest="maxAF", help="maximum AF: variants with alternative allele frequency LESS (<) than this threshold will be included")
 parser.add_option('-w', '--weight', action="store", type="string", dest="weight", help="variant weight file name")
 parser.add_option('-p', '--pheno', action="store", type="string", dest="pheno", help="phenotype file name")
 (options, args)=parser.parse_args()
@@ -220,7 +219,7 @@ with gzip.open(sortfilename, 'rt') as infile:
             total_hw = 0 #sum of homozyogus weights
             total_cw = 0 #sum of compound heterozygous weights
             for i in range(0, len(sampleIDs)):
-                if ((samplecount[i] == 'comp') or (samplecount[i]=='hom')):
+                if (((samplecount[i] == 'comp') or (samplecount[i]=='hom')) and (float(max(sampleweight_L[i])) > 0) and (float(max(sampleweight_R[i])) > 0)):
 #Count total number of CompHet/Homo individuals
                     total = total+1
 #Compute individual weight by adding maximum of R and L
@@ -340,7 +339,7 @@ with gzip.open(sortfilename, 'rt') as infile:
     total_hw = 0
     total_cw = 0
     for i in range(0, len(sampleIDs)):
-        if ((samplecount[i] == 'comp') or (samplecount[i]=='hom')):
+        if (((samplecount[i] == 'comp') or (samplecount[i]=='hom')) and (float(max(sampleweight_L[i])) > 0) and (float(max(sampleweight_R[i])) > 0)):
           
 ##Count total number of CompHet/Homo individuals
             total=total+1
@@ -396,7 +395,6 @@ with gzip.open(sortfilename, 'rt') as infile:
         idvweightfile.write(str(sampleweight_max[i])+'\t')
     idvweightfile.write(str(sampleweight_max[len(sampleIDs)-1])+'\n')
 
-    weights.close()
 infile.close()
 countfile.close()
 idvweightfile.close()
@@ -409,7 +407,7 @@ with gzip.open(sortfilename, 'rt') as infile:
 #Designate output 'variantfile' name
     variantfilename=output_filename+'_variants.txt'
     variantfile=open(variantfilename, 'w')
-    variantfile.write('CHOM'+'\t'+'POS'+'\t'+'ID:ALT'+'\t'+'REF'+'\t'+'ALT'+'\t'+'GENE'+'\t'+'HET_SAMPLEIDs'+'\t'+'HOM_SAMPLEIDs'+'\n')
+    variantfile.write('CHOM'+'\t'+'POS'+'\t'+'ID:ALT'+'\t'+'WEIGHT'+'\t'+'REF'+'\t'+'ALT'+'\t'+'GENE'+'\t'+'HET_SAMPLEIDs'+'\t'+'HOM_SAMPLEIDs'+'\n')
 #Read in all lines of sorted intermediate gzip file
     lines=infile.readlines()
 #For each variant, identify individuals with 'c' or 'h' in the same gene, and if their genotype is either '0|1', or '1|0', or'1|1'
@@ -421,7 +419,7 @@ with gzip.open(sortfilename, 'rt') as infile:
         gene=words[7]
         numwords=len(words)        
 #Set variantsampleID list with variantfile columns: CHROM POS ID GENE
-        variantsampleID=[words[0], words[1], words[2], words[3], words[4], words[7]]
+        variantsampleID=[words[0], words[1], words[2], w[words[2]], words[3], words[4], words[7]]
 #Open countfile
         countfile=open(countfilename, 'r')
 #Skip header of countfile
@@ -450,6 +448,5 @@ with gzip.open(sortfilename, 'rt') as infile:
             variantfile.write('\n')
         countfile.close()
     variantfile.close()
+    weights.close()
 infile.close()
-            
-            
