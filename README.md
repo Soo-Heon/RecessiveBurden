@@ -87,7 +87,7 @@ Python version 3.6 or above
         Column names are CHROM POS ID:ALT REF ALT AC AF GENE IMPACT SampleIDs
 
 # 2. Association Testing Using Weighted RecessiveBurden
-- logistf_09_20200620.R:
+- logistf_10_20200824.R:
 
           R code to perform Firth's penalized logistic regression analysis for binary trait using output from RecessiveBurden.
 - linear_09_20200624.R:
