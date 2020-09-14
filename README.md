@@ -5,7 +5,7 @@ Python codes to calculate recessive burden (compound heterozygous + homozygous) 
 Python version 3.6 or above
 
 ## 1.2 Basic Usage
-"python RecessiveBurden_v0.02_20200624.py -i input_file -o output -c minAC -f maxAF -w weight_file -p pheno_file"
+"python RecessiveBurden_v0.06_20200829.py -i input_file -o output -c minAC -f maxAF -w weight_file -p pheno_file"
 
 ## 1.3 Input Parameters
 1) vcf_file [-i]: Input vcf filename. Can be either vcf, vcf.gz.
