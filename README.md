@@ -90,7 +90,7 @@ Python version 3.6 or above
 - logistf_10_20200824.R:
 
           R code to perform Firth's penalized logistic regression analysis for binary trait using output from RecessiveBurden.
-- linear_09_20200624.R:
+- linear_10_20201014.R:
 
           R code to perform linear regression analysis for continuous trait using output from RecessiveBurden.
 
