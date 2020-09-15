@@ -62,6 +62,7 @@ if (as.character(NA) %in% cov){
 formula<-paste(opt$yvar, "~", "ndata[,i]", sep="", collapse="")
 } else{
 formula<-paste(opt$yvar, "~", "ndata[,i]+", paste(unlist(cov), sep="", collapse="+"), sep="", collapse="")
+}
 #In case where there is at least one CompHet/Hom mutations
 if (wsum[i-1] > 0){
 meancomphet[i-1]<-round(mean(ndata[ndata[,i]!=0,names(ndata)==opt$yvar], na.rm=T), digits=2)
